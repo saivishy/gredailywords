@@ -4,7 +4,7 @@ import pandas as pd
 import xlrd
 
 
-saivishToken='xoxp-662751535029-662751535477-665843427030-30bbdfaa642d65974a2578479eb80560'
+saivishToken='<ENTER API TOKEN HERE>'
 slackobj=Slacker(saivishToken)
 channel_name='vocab-build'
 
