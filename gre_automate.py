@@ -4,10 +4,14 @@ import pandas as pd
 import xlrd
 
 
+<<<<<<< HEAD
+saivishToken='<ENTER LEGACY TOKEN>'
+=======
 saivishToken='<ENTER API TOKEN HERE>'
+>>>>>>> ee6108fc700e48dc6cd198d40a6a70888462cd33
 slackobj=Slacker(saivishToken)
 channel_name='vocab-build'
-
+summary_channel='summary'
 def get_var(filename):    
     f=open(filename,'rb')
     var=pickle.load(f)
@@ -24,7 +28,10 @@ def get_sheet():
     current_sheet=get_var('sheet.p')
     if current_index>25:
         current_sheet+=1
-        dump_var(current_index,'sheet.p')
+        current_index=1	
+        dump_var(current_sheet,'sheet.p')
+        dump_var(current_index,'index.p')
+
     return current_sheet
 
 def summary():
@@ -34,11 +41,12 @@ def summary():
     for word in word_list:
         msg+='\n'+str(i+1)+'. '+word
         i+=1
-    slackobj.chat.post_message('#' + channel_name,msg, as_user=False)
+    slackobj.chat.post_message('#' + summary_channel,msg, as_user=False)
     word_list=[]
     current_word=get_var('cur_word.p')
     current_word=1
     dump_var(current_word,'cur_word.p')
+    dump_var(word_list,'word_list.p')
     
 
 
@@ -54,7 +62,7 @@ def post_word():
     xlsheet=xlsheet[1:]
     current_word=get_var('cur_word.p')
     current_index=get_var('index.p')
-    msg=str(current_word)+'.\n\n *_'+xlsheet[col[0]][current_index].upper()+'_*\n\n  '+xlsheet[col[1]][current_index]+'\n\n *SYNONYMS* : '+xlsheet[col[3]][current_index]+'\n\n *MNEMONIC* : '+xlsheet[col[2]][current_index]
+    msg=str(current_word)+'.\n\n *_'+xlsheet[col[0]][current_index].upper()+'_*\n\n  '+xlsheet[col[2]][current_index]+'\n\n *SYNONYMS* : '+xlsheet[col[3]][current_index]+'\n\n *MNEMONIC* : '+xlsheet[col[1]][current_index]
     slackobj.chat.post_message('#' + channel_name, msg, as_user=False)
     word_list=get_var('word_list.p')
     word_list.append(xlsheet[col[0]][current_index])
